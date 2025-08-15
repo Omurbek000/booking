@@ -52,3 +52,4 @@ class HotelImage(models.Model):
   
 class Room(models.Model):
   pass   
+
