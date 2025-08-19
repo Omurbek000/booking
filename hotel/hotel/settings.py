@@ -28,21 +28,26 @@ SECRET_KEY = os_gotenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hotel_app',
-    'rest_framework',
-    'phonenumber_field',
+    'hotel_app', #! папка приложения
+    'rest_framework', #! для API
+    'phonenumber_field', #! для телефонов
+    'django_filters', #! для фильтрации
+    'rest_framework_swagger',  #! Для документации API # pip install django-rest-swagger
+    'drf_yasg'   #!pip install drf-yasg
+    
 ]
 
 MIDDLEWARE = [
@@ -114,8 +119,20 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('ru', 'Russian'),
+    ('tr', 'Turkia'),
+)
+
+
+MODELTRASLATION_DEFAULT_LANGUAGE = 'en'
+
+MODELTRANSLATION_LANGUAGES = ('en', 'ru', 'tr',)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -130,3 +147,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'hotel.UserProfile'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

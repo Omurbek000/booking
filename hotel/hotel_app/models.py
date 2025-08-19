@@ -38,8 +38,9 @@ class Hotel(models.Model):
   hotel_descriptions = models.TextField()
   country = models.ForeignKey(Country, on_delete=models.CASCADE)
   city = models.ForeignKey(City, on_delete=models.CASCADE)
-  adres = models.CharField(max_length=64)
-  hotrl_video = models.FieldFile(upload_to='videos/')
+  address = models.CharField(max_length=64)
+  hotel_stars = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+  hotel_video = models.FieldFile(upload_to='videos/', null=True, blank=True)
   created_date = models.DateTimeField(auto_created=True)
   
   def __str__(self) -> str:
@@ -51,5 +52,55 @@ class HotelImage(models.Model):
   hotel_image = models.ImageField(upload_to='images/', null=True, blank=True)
   
 class Room(models.Model):
-  pass   
+  room_number = models.PositiveSmallIntegerField()
+  hotel_room = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+  TYPE_ROOM = (
+    ('люкс', 'люкс'),
+    ('семейный', 'семейный'),
+    ('одноместный', 'одноместный'),
+    ('двухместный', 'двухместный'),
+  )
+  room_type = models.CharField(max_length=10, choices=TYPE_ROOM)
+  STATUS_CHOICES = (
+    ('доступен', 'доступен'),
+    ('забронирован', 'забронирован'),
+  )
+  room_status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+  room_price = models.PositiveSmallIntegerField()
+  all_includest = models.BooleanField(default=False)
+  room_descriptions = models.TextField()
 
+  def __str__(self) -> str:
+    return f"{self.user_name} {self.hotrl} {self.stars}"
+
+
+class RoonImage(models.Model):
+  room = models.ForeignKey(Room, on_delete=models.CASCADE),
+  romm_image = models.ImageField(upload_to='images/', null=True, blank=True)
+  
+  
+class Review(models.Model):
+  user_name = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+  hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+  text = models.PositiveSmallIntegerField()
+  stars = models.PositiveSmallIntegerField(choices=[(i, str(i)) for in range(1,6)], null=True, blank=True)
+  
+  def __str__(self) -> str:
+    return f"{self.user_name} {self.hotrl} {self.stars}"
+
+class Boking(models.Model):
+  hotrl_book = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+  room_book = models.ForeignKey(Room, on_delete=models.CASCADE)
+  user_book = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+  check_in = models.DateTimeField()
+  check_out = models.DateTimeField()
+  total_price = models.PositiveSmallIntegerField(default=0)
+  STATUS_CHOICES = (
+    ('забронирован', 'забронирован'),
+    ('отменен', 'отменен'),
+  )
+  status_book = models.CharField(max_length=10, choices=STATUS_CHOICES)
+  
+  def __str__(self) -> str:
+    return f"{user_book} {self.hotel_book} {self.room_book} {self.status_book}"
+  
