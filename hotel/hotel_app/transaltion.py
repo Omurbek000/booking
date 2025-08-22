@@ -14,7 +14,7 @@ class CityTranslationOptions(TranslationOptions):
 
 @register(Hotel)
 class HotelTranslationOptions(TranslationOptions):
-    fields = ("hotel_name", "hotel_descritions",  "address")
+    fields = ("hotel_name", "hotel_description",  "address")
 
 
 @register(Room)
