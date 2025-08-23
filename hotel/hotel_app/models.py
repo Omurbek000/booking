@@ -16,20 +16,23 @@ class Country(models.Model):
 
 
 #! 👤 Расширенная модель пользователя
+#! 👤 Расширенная модель пользователя
 class UserProfile(AbstractUser):
     ROLE_CHOICES = (
         ("simpleUser", "Обычный пользователь"),
         ("ownerUser", "Владелец отеля"),
     )
     country = models.ForeignKey(
-        Country, on_delete=models.CASCADE
+        Country, on_delete=models.CASCADE, null=True, default=1
     )  #! Страна пользователя
     user_role = models.CharField(
         max_length=10, choices=ROLE_CHOICES, default="simpleUser"
     )  #! Роль пользователя
-    phone_number = PhoneNumberField(region="RUS")  #! Номер телефона
+    phone_number = PhoneNumberField(region="RU")  #! Номер телефона
     age = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(18), MaxValueValidator(100)]
+        validators=[MinValueValidator(18), MaxValueValidator(100)],
+        null=True,
+        blank=True,
     )  #! Возраст
 
     def __str__(self):
